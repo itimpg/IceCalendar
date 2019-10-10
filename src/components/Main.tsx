@@ -3,31 +3,34 @@ import { Route } from 'react-router';
 import CalendarList from './CalendarList';
 import CalendarItem from './CalendarItem';
 import { MainProps } from '../states/MainProps';
+import { Container, Button } from 'react-bootstrap';
+import SiteNavbar from './SiteNavbar';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 class Main extends Component<MainProps> {
     render() {
         const items = this.props.calendarItems[this.props.filter.yearMonthId] || [];
+        const newItemLink = '/item/' + moment().format("YYYYMMDD");
         return (
             <div>
-                <Route exact path="/" render={() => (
-                    <div>
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            this.props.updateFilter({
-                                filterMonth: 7, filterYear: 2019, yearMonthId: ''
-                            });
-                        }}>
-                            Update
-                    </button>
-                        <CalendarList items={items} {...this.props} />
-                    </div>
-                )} />
-                <Route path="/item/:id" render={(param) => (
-                    <CalendarItem
-                        itemId={Number(param.match.params.id)}
-                        history={param.history}
-                        {...this.props} />
-                )} />
+                <SiteNavbar />
+                <Container>
+                    <Route exact path="/" render={() => (
+                        <div>
+                            <Link to={newItemLink}>
+                                <Button className="pull-right">Add New</Button>
+                            </Link>
+                            <CalendarList items={items} {...this.props} />
+                        </div>
+                    )} />
+                    <Route path="/item/:id" render={(param) => (
+                        <CalendarItem
+                            itemId={param.match.params.id}
+                            history={param.history}
+                            {...this.props} />
+                    )} />
+                </Container>
             </div>
         );
     }

@@ -2,6 +2,8 @@ import React from 'react';
 import { CalendarItemModel } from '../models/CalendarItemModel';
 import { Link } from 'react-router-dom';
 import { MainProps } from '../states/MainProps';
+import { Row, Card, Button } from 'react-bootstrap';
+import moment from 'moment';
 
 interface CalendarListItemProps extends MainProps {
     item: CalendarItemModel;
@@ -25,19 +27,27 @@ function getDayOfWeek(date: Date) {
 }
 
 const calendarListItem = function (props: CalendarListItemProps) {
+    const date = moment(props.item.date).format("D/MM/YYYY");
     return (
         <Link to={`/item/${props.item.id}`}>
-            <div className="mock-border">
-                <p>{props.item.date.getDate()}</p>
-                <p>{props.item.date.getMonth()}</p>
-                <p>{props.item.date.getFullYear()}</p>
-                <p>{props.item.code}</p>
-                <p>{getWorkingHour(props.item.code)}</p>
-                <button onClick={(e) => {
-                    e.preventDefault();
-                    props.deleteCalendarItem(props.item, props.filter.yearMonthId);
-                }}>Remove</button>
-            </div>
+            <Card>
+                <Card.Header>{date}</Card.Header>
+                <Card.Body>
+                    <p>{date}</p>
+                    <p>{props.item.code}</p>
+                    <p>{getWorkingHour(props.item.code)}</p>
+                    <Link to={"/item/" + props.item.id}>
+                        <Button>Edit</Button>
+                    </Link>
+
+                    <Button onClick={(e: any) => {
+                        e.preventDefault();
+                        props.deleteCalendarItem(props.item, props.filter.yearMonthId);
+                    }}>
+                        Remove
+                    </Button>
+                </Card.Body>
+            </Card>
         </Link>
     );
 }

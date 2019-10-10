@@ -1,10 +1,8 @@
-
 import { AnyAction } from "redux";
 import { ActionTypes } from "./ActionTypes";
 import { CalendarItemModel } from "../models/CalendarItemModel";
-import { Filter } from "../models/Filter";
 
-export function saveCalendarItem(calendarItem: CalendarItemModel, yearMonthId: string): AnyAction {
+export function saveCalendarItem(calendarItem: CalendarItemModel, yearMonthId: number): AnyAction {
     return {
         type: ActionTypes.SAVE_CALENDARITEM,
         calendarItem,
@@ -12,7 +10,7 @@ export function saveCalendarItem(calendarItem: CalendarItemModel, yearMonthId: s
     }
 }
 
-export function deleteCalendarItem(calendarItem: CalendarItemModel, yearMonthId: string): AnyAction {
+export function deleteCalendarItem(calendarItem: CalendarItemModel, yearMonthId: number): AnyAction {
     return {
         type: ActionTypes.DELETE_CALENDARITEM,
         calendarItem,
@@ -20,9 +18,9 @@ export function deleteCalendarItem(calendarItem: CalendarItemModel, yearMonthId:
     }
 }
 
-export function updateFilter(filter: Filter): AnyAction {
+export function updateFilter(yearMonthId: number): AnyAction {
     return {
         type: ActionTypes.UPDATE_FILTER,
-        filter
+        yearMonthId
     }
 }

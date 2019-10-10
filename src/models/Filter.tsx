@@ -1,5 +1,3 @@
 export interface Filter {
-    filterMonth: number;
-    filterYear: number;
-    yearMonthId: string;
+    yearMonthId: number;
 }

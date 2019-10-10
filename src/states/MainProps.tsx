@@ -1,10 +1,12 @@
 import { CalendarItemModel } from "../models/CalendarItemModel";
 import { Filter } from "../models/Filter";
+import { CalendarCode } from "../models/CalendarCode";
 
 export interface MainProps {
     calendarItems: any,
+    calendarCodes: CalendarCode[],
     filter: Filter,
-    saveCalendarItem: (item: CalendarItemModel, yearMonthId: string) => void;
-    deleteCalendarItem: (item: CalendarItemModel, yearMonthId: string) => void;
-    updateFilter: (filter: Filter) => void;
+    saveCalendarItem: (item: CalendarItemModel, yearMonthId: number) => void;
+    deleteCalendarItem: (item: CalendarItemModel, yearMonthId: number) => void;
+    updateFilter: (yearMonthId: number) => void;
 }

@@ -1,8 +1,6 @@
-import { CalendarItemModel } from "../models/CalendarItemModel";
-
 const mockData = {
-    201909: [{
-        date: new Date(2019,9,1),
+    201910: [{
+        date: new Date(2019,10,1),
         code: 'X',
         id: 0
     }],
