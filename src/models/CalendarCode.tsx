@@ -1,4 +1,5 @@
 export interface CalendarCode {
     code: string;
-    time: string;
+    startTime: string;
+    endTime: string;
 }

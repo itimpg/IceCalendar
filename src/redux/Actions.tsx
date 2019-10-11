@@ -8,15 +8,7 @@ export function saveCalendarItem(calendarItem: CalendarItemModel, yearMonthId: n
         calendarItem,
         yearMonthId,
     }
-}
-
-export function deleteCalendarItem(calendarItem: CalendarItemModel, yearMonthId: number): AnyAction {
-    return {
-        type: ActionTypes.DELETE_CALENDARITEM,
-        calendarItem,
-        yearMonthId
-    }
-}
+} 
 
 export function updateFilter(yearMonthId: number): AnyAction {
     return {

@@ -1,7 +1,56 @@
-.mock-border {
-  border: 1px solid red;
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none !important;
 }
 
-.container {
-  margin-top: 10px;
+a:hover .old-day,
+a:hover .new-day {
+    background: #66ccff;
+}
+
+.date-row {
+    border: 1px solid #e6e6e6;
+}
+
+.date-item {
+    background: #000;
+}
+
+.date-sun {
+    color: #ff5050;
+}
+
+.date-mon {
+    color: #ffff99;
+}
+
+.date-tue {
+    color: #ffccff;
+}
+
+.date-wed {
+    color: #99ff99;
+}
+
+.date-thu {
+    color: #ff9966;
+}
+
+.date-fri {
+    color: #33ccff;
+}
+
+.date-sat {
+    color: #cc99ff;
+}
+
+.old-day {
+    background: #d9d9d9;
+}
+
+.new-day {
+    background: #f9f9f9;
 }

@@ -7,6 +7,5 @@ export interface MainProps {
     calendarCodes: CalendarCode[],
     filter: Filter,
     saveCalendarItem: (item: CalendarItemModel, yearMonthId: number) => void;
-    deleteCalendarItem: (item: CalendarItemModel, yearMonthId: number) => void;
     updateFilter: (yearMonthId: number) => void;
 }

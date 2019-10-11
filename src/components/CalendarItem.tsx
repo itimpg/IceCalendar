@@ -4,6 +4,7 @@ import { History } from 'history';
 import { MainProps } from '../states/MainProps';
 import { Form, Button } from 'react-bootstrap';
 import moment from 'moment';
+import { CalendarCode } from '../models/CalendarCode';
 
 interface CalendarItemProps extends MainProps {
     history: History;
@@ -11,29 +12,32 @@ interface CalendarItemProps extends MainProps {
 }
 
 class CalendarItem extends Component<CalendarItemProps> {
- 
+
     itemId: string;
     selectedDate: Date;
 
     constructor(props: CalendarItemProps, context?: any) {
         super(props, context);
-        this.handleSubmit = this.handleSubmit.bind(this); 
+        this.handleSubmit = this.handleSubmit.bind(this);
 
         this.itemId = this.props.itemId;
         if (!this.itemId || this.itemId.length !== 8) {
             this.itemId = moment().format('YYYYMMDD');
         }
- 
+
         this.selectedDate = moment(this.itemId, "YYYYMMDD").toDate();
     }
 
     handleSubmit(event: any) {
         event.preventDefault();
         const code = event.target.elements.code.value;
+        const workingCode: CalendarCode = this.props.calendarCodes.find((cCode: CalendarCode) => cCode.code === code) || this.props.calendarCodes[0];
         const item: CalendarItemModel = {
             date: this.selectedDate,
             code: code,
-            id: this.itemId
+            id: this.itemId,
+            startTime: workingCode.startTime,
+            endTime: workingCode.endTime
         };
         const yearMonthId = Number(moment(this.selectedDate).format("YYYYMM"));
         this.props.saveCalendarItem(item, yearMonthId);

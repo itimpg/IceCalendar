@@ -2,52 +2,31 @@ import React from 'react';
 import { CalendarItemModel } from '../models/CalendarItemModel';
 import { Link } from 'react-router-dom';
 import { MainProps } from '../states/MainProps';
-import { Row, Card, Button } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import moment from 'moment';
+import { CalendarCode } from '../models/CalendarCode';
 
 interface CalendarListItemProps extends MainProps {
     item: CalendarItemModel;
 }
 
-function getWorkingHour(code: string) {
-    return code;
-}
-
-function getDayOfWeek(date: Date) {
-    const index = date.getDay();
-    switch (index) {
-        case 0: return 'sun';
-        case 1: return 'mon';
-        case 2: return 'tue';
-        case 3: return 'wed';
-        case 4: return 'thu';
-        case 5: return 'fri';
-        case 6: return 'sat';
-    }
-}
-
 const calendarListItem = function (props: CalendarListItemProps) {
-    const date = moment(props.item.date).format("D/MM/YYYY");
+    const momentDate = moment(props.item.date);
+    const dayOfWeek: string = momentDate.format('ddd');
+    const dayClass: string = props.item.date < moment().startOf('day').toDate() ? 'old-day' : 'new-day';
+    let workingTime = `${props.item.startTime} - ${props.item.endTime}`;
     return (
         <Link to={`/item/${props.item.id}`}>
-            <Card>
-                <Card.Header>{date}</Card.Header>
-                <Card.Body>
-                    <p>{date}</p>
-                    <p>{props.item.code}</p>
-                    <p>{getWorkingHour(props.item.code)}</p>
-                    <Link to={"/item/" + props.item.id}>
-                        <Button>Edit</Button>
-                    </Link>
-
-                    <Button onClick={(e: any) => {
-                        e.preventDefault();
-                        props.deleteCalendarItem(props.item, props.filter.yearMonthId);
-                    }}>
-                        Remove
-                    </Button>
-                </Card.Body>
-            </Card>
+            <Row className="text-center date-row">
+                <Col xs="3" className={'date-item date-' + dayOfWeek.toLowerCase()}>
+                    <span>{dayOfWeek}</span>
+                    <h1>{momentDate.format('DD')}</h1>
+                </Col>
+                <Col xs="9" className={dayClass}>
+                    <span>{props.item.code}</span>
+                    <h3>{workingTime}</h3>
+                </Col>
+            </Row>
         </Link>
     );
 }

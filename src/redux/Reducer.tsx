@@ -4,7 +4,7 @@ import { CalendarCode } from "../models/CalendarCode";
 import { Filter } from "../models/Filter";
 import CalendarItemCodeData from '../data/CalendarItemCodeData';
 import { CalendarItemModel } from "../models/CalendarItemModel";
-import mockData from '../data/CalendarTestData';
+import initData from '../data/CalendarTestData';
 import moment from 'moment';
 
 function calendarCodes(state: CalendarCode[] = CalendarItemCodeData, action: AnyAction) {
@@ -22,26 +22,15 @@ function filter(state: Filter = { yearMonthId: defaultFilter }, action: AnyActio
 }
 
 function calendarItems(
-    state: any = mockData,
+    state: any = initData,
     action: AnyAction) {
-        
+
     switch (action.type) {
         case ActionTypes.SAVE_CALENDARITEM:
-            if (!state[action.yearMonthId]) {
-                return { ...state, [action.yearMonthId]: [action.calendarItem] }
-            } else {
-                return { ...state, [action.yearMonthId]: [...state[action.yearMonthId], action.calendarItem] }
-            }
-        case ActionTypes.DELETE_CALENDARITEM:
-            if (state[action.yearMonthId]) {
-                const currentItems: CalendarItemModel[] = state[action.yearMonthId];
-                const index = currentItems.findIndex(x => x.id === action.calendarItem.id);
-                return {
-                    ...state,
-                    [action.yearMonthId]: [...currentItems.slice(0, index), ...currentItems.slice(index + 1)]
-                };
-            }
-            break;
+            const item : CalendarItemModel = state[action.yearMonthId].find((x: CalendarItemModel) => x.id === action.calendarItem.id);
+            item.code = action.calendarItem.code;
+            item.startTime = action.calendarItem.startTime;
+            item.endTime = action.calendarItem.endTime;
     }
     return state;
 }

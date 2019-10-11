@@ -18,9 +18,6 @@ class Main extends Component<MainProps> {
                 <Container>
                     <Route exact path="/" render={() => (
                         <div>
-                            <Link to={newItemLink}>
-                                <Button className="pull-right">Add New</Button>
-                            </Link>
                             <CalendarList items={items} {...this.props} />
                         </div>
                     )} />
