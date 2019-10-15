@@ -4,7 +4,7 @@ import { MainProps } from '../states/MainProps';
 import { CalendarItemModel } from '../models/CalendarItemModel';
 
 interface calendarListProps extends MainProps {
-    items: CalendarItemModel[]
+    items: CalendarItemModel[];
 }
 
 const calendarList = function (props: calendarListProps) {

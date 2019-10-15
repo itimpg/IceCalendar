@@ -1,10 +1,9 @@
 import { combineReducers, AnyAction } from "redux";
-import { ActionTypes } from "./ActionTypes";
+import { ActionTypes } from "./actionTypes";
 import { CalendarCode } from "../models/CalendarCode";
 import { Filter } from "../models/Filter";
 import CalendarItemCodeData from '../data/CalendarItemCodeData';
 import { CalendarItemModel } from "../models/CalendarItemModel";
-import initData from '../data/CalendarTestData';
 import moment from 'moment';
 
 function calendarCodes(state: CalendarCode[] = CalendarItemCodeData, action: AnyAction) {
@@ -12,9 +11,7 @@ function calendarCodes(state: CalendarCode[] = CalendarItemCodeData, action: Any
 }
 
 const defaultFilter = Number(moment().format("YYYYMM"));
-
 function filter(state: Filter = { yearMonthId: defaultFilter }, action: AnyAction) {
-
     if (action.type === ActionTypes.UPDATE_FILTER) {
         state.yearMonthId = action.yearMonthId;
     }
@@ -22,17 +19,32 @@ function filter(state: Filter = { yearMonthId: defaultFilter }, action: AnyActio
 }
 
 function calendarItems(
-    state: any = initData,
+    state: any = [],
     action: AnyAction) {
 
     switch (action.type) {
-        case ActionTypes.SAVE_CALENDARITEM:
-            const item : CalendarItemModel = state[action.yearMonthId].find((x: CalendarItemModel) => x.id === action.calendarItem.id);
-            item.code = action.calendarItem.code;
-            item.startTime = action.calendarItem.startTime;
-            item.endTime = action.calendarItem.endTime;
+        case ActionTypes.LOAD_CALENDARITEMS:
+            return fillMonth(action.yearMonthId, action.items);
     }
     return state;
+}
+
+function fillMonth(monthYearId: number, dataItems: CalendarItemModel[]): CalendarItemModel[] {
+    const currentMonth = moment(monthYearId.toString(), "YYYYMM");
+    const initData: CalendarItemModel[] = [];
+    for (let i = 0; i < currentMonth.endOf('month').toDate().getDate(); i++) {
+        const id = currentMonth.startOf('month').add(i, 'days').format("YYYYMMDD");
+        const item: CalendarItemModel = dataItems.find((x: CalendarItemModel) => x.id === id) ||
+            {
+                date: moment(id, "YYYYMMDD").toDate(),
+                code: 'X',
+                id: id,
+                startTime: '',
+                endTime: '',
+            };
+        initData.push(item);
+    }
+    return initData;
 }
 
 const rootReducer = combineReducers({ calendarItems, calendarCodes, filter });

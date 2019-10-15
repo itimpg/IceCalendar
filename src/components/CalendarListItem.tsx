@@ -2,9 +2,8 @@ import React from 'react';
 import { CalendarItemModel } from '../models/CalendarItemModel';
 import { Link } from 'react-router-dom';
 import { MainProps } from '../states/MainProps';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import moment from 'moment';
-import { CalendarCode } from '../models/CalendarCode';
 
 interface CalendarListItemProps extends MainProps {
     item: CalendarItemModel;

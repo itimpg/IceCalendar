@@ -5,42 +5,39 @@ import { MainProps } from '../states/MainProps';
 import { Form, Button } from 'react-bootstrap';
 import moment from 'moment';
 import { CalendarCode } from '../models/CalendarCode';
+import Loading from './Loading';
+import NotFound from './NotFound';
 
 interface CalendarItemProps extends MainProps {
     history: History;
     itemId: string;
+    isLoading: boolean;
 }
 
 class CalendarItem extends Component<CalendarItemProps> {
 
-    itemId: string;
-    selectedDate: Date;
+    selectedItem?: CalendarItemModel;
 
     constructor(props: CalendarItemProps, context?: any) {
         super(props, context);
         this.handleSubmit = this.handleSubmit.bind(this);
 
-        this.itemId = this.props.itemId;
-        if (!this.itemId || this.itemId.length !== 8) {
-            this.itemId = moment().format('YYYYMMDD');
-        }
-
-        this.selectedDate = moment(this.itemId, "YYYYMMDD").toDate();
+        this.selectedItem = this.props.calendarItems.find((item) => item.id === this.props.itemId);
     }
 
     handleSubmit(event: any) {
         event.preventDefault();
+        if (!this.selectedItem) { return; }
+        
         const code = event.target.elements.code.value;
         const workingCode: CalendarCode = this.props.calendarCodes.find((cCode: CalendarCode) => cCode.code === code) || this.props.calendarCodes[0];
-        const item: CalendarItemModel = {
-            date: this.selectedDate,
-            code: code,
-            id: this.itemId,
-            startTime: workingCode.startTime,
-            endTime: workingCode.endTime
-        };
-        const yearMonthId = Number(moment(this.selectedDate).format("YYYYMM"));
-        this.props.saveCalendarItem(item, yearMonthId);
+
+        this.selectedItem.code = code;
+        this.selectedItem.startTime = workingCode.startTime;
+        this.selectedItem.endTime = workingCode.endTime;
+
+        const yearMonthId = this.props.filter.yearMonthId;
+        this.props.doSaveCalendar(this.selectedItem, yearMonthId);
         this.props.history.push('/');
     }
 
@@ -49,11 +46,19 @@ class CalendarItem extends Component<CalendarItemProps> {
     }
 
     render() {
+        if (this.props.isLoading) {
+            return <Loading />
+        }
+
+        if(!this.selectedItem){
+            return <NotFound/>
+        }
+
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Form.Group>
                     <Form.Label>Date : </Form.Label>
-                    <Form.Control type='text' disabled value={moment(this.selectedDate).format("D/MM/YYYY")} />
+                    <Form.Control type='text' disabled value={moment(this.selectedItem.date).format("D/MM/YYYY")} />
                     <Form.Label>Code : </Form.Label>
                     <select className='form-control' name='code'>
                         {this.initDropdown()}
