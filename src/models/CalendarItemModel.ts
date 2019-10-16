@@ -1,7 +1,9 @@
 export interface CalendarItemModel {
-    date: Date;
-    code: string;
     id: string;
-    startTime: string;
-    endTime: string;
+    date: Date;
+    code1: string;
+    code2: string;
+    isPharmacy: boolean;
+    manualWorkingTime: string;
+    note: string;
 }

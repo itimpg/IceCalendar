@@ -11,6 +11,14 @@ a:hover .new-day {
     background: #66ccff;
 }
 
+.center-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px;
+    margin-left: -20px;
+}
+
 .date-row {
     border: 1px solid #e6e6e6;
 }

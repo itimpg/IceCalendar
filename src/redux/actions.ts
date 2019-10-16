@@ -1,7 +1,7 @@
 import { AnyAction, Dispatch } from "redux";
 import { ActionTypes } from "./actionTypes";
 import { CalendarItemModel } from "../models/CalendarItemModel";
-import { database } from '../database/config';
+import { database } from '../database/dataconnection';
 
 export function doLoadCalendar(yearMonthId: number) {
     return (dispatch: Dispatch) => {

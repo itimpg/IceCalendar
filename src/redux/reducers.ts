@@ -36,11 +36,13 @@ function fillMonth(monthYearId: number, dataItems: CalendarItemModel[]): Calenda
         const id = currentMonth.startOf('month').add(i, 'days').format("YYYYMMDD");
         const item: CalendarItemModel = dataItems.find((x: CalendarItemModel) => x.id === id) ||
             {
-                date: moment(id, "YYYYMMDD").toDate(),
-                code: 'X',
                 id: id,
-                startTime: '',
-                endTime: '',
+                date: moment(id, "YYYYMMDD").toDate(),
+                code1: 'X',
+                code2: 'X',
+                isPharmacy: false,
+                manualWorkingTime: '',
+                note: ''
             };
         initData.push(item);
     }

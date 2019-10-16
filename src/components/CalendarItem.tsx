@@ -16,28 +16,33 @@ interface CalendarItemProps extends MainProps {
 
 class CalendarItem extends Component<CalendarItemProps> {
 
+    state = { isPharmacy: false };
     selectedItem?: CalendarItemModel;
 
     constructor(props: CalendarItemProps, context?: any) {
         super(props, context);
-        this.handleSubmit = this.handleSubmit.bind(this);
 
-        this.selectedItem = this.props.calendarItems.find((item) => item.id === this.props.itemId);
+        this.selectedItem = undefined;
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleIsPharmacyChanged = this.handleIsPharmacyChanged.bind(this);
     }
 
     handleSubmit(event: any) {
         event.preventDefault();
         if (!this.selectedItem) { return; }
-        
-        const code = event.target.elements.code.value;
-        const workingCode: CalendarCode = this.props.calendarCodes.find((cCode: CalendarCode) => cCode.code === code) || this.props.calendarCodes[0];
 
-        this.selectedItem.code = code;
-        this.selectedItem.startTime = workingCode.startTime;
-        this.selectedItem.endTime = workingCode.endTime;
-
-        const yearMonthId = this.props.filter.yearMonthId;
-        this.props.doSaveCalendar(this.selectedItem, yearMonthId);
+        if (this.state.isPharmacy) {
+            this.selectedItem.code1 = 'X';
+            this.selectedItem.code2 = 'X';
+            this.selectedItem.manualWorkingTime = event.target.elements.manualWorkingTime.value;
+        } else {
+            this.selectedItem.code1 = event.target.elements.code1.value;
+            this.selectedItem.code2 = event.target.elements.code2.value;
+        }
+        this.selectedItem.isPharmacy = this.state.isPharmacy;
+        this.selectedItem.note = event.target.elements.note.value;
+        this.props.doSaveCalendar(this.selectedItem, this.props.filter.yearMonthId);
         this.props.history.push('/');
     }
 
@@ -45,13 +50,20 @@ class CalendarItem extends Component<CalendarItemProps> {
         return this.props.calendarCodes.map((item, index) => <option key={index} id={item.code}>{item.code}</option>)
     }
 
+    handleIsPharmacyChanged() {
+        this.setState({
+            isPharmacy: !this.state.isPharmacy
+        });
+    }
+
     render() {
         if (this.props.isLoading) {
             return <Loading />
         }
 
-        if(!this.selectedItem){
-            return <NotFound/>
+        this.selectedItem = this.props.calendarItems.find((item) => item.id === this.props.itemId);
+        if (!this.selectedItem) {
+            return <Loading />
         }
 
         return (
@@ -59,10 +71,31 @@ class CalendarItem extends Component<CalendarItemProps> {
                 <Form.Group>
                     <Form.Label>Date : </Form.Label>
                     <Form.Control type='text' disabled value={moment(this.selectedItem.date).format("D/MM/YYYY")} />
-                    <Form.Label>Code : </Form.Label>
-                    <select className='form-control' name='code'>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Code 1 : </Form.Label>
+                    <select className='form-control' name='code1'>
                         {this.initDropdown()}
                     </select>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Code 2 : </Form.Label>
+                    <select className='form-control' name='code2'>
+                        {this.initDropdown()}
+                    </select>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Check type="checkbox" label="ร้านยา"
+                        checked={this.state.isPharmacy}
+                        onChange={this.handleIsPharmacyChanged} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Working Time : </Form.Label>
+                    <Form.Control type='text' name='manualWorkingTime'></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Note : </Form.Label>
+                    <Form.Control type='text' name='note'></Form.Control>
                 </Form.Group>
                 <Button className='form-control' variant="primary" type="submit">Save</Button>
             </Form>
