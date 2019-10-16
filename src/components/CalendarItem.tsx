@@ -21,7 +21,7 @@ class CalendarItem extends Component<CalendarItemProps> {
 
     constructor(props: CalendarItemProps, context?: any) {
         super(props, context);
-
+        
         this.selectedItem = undefined;
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -57,13 +57,13 @@ class CalendarItem extends Component<CalendarItemProps> {
     }
 
     render() {
-        if (this.props.isLoading) {
+        if (this.props.isLoading || !this.props.calendarItems.length) {
             return <Loading />
         }
 
         this.selectedItem = this.props.calendarItems.find((item) => item.id === this.props.itemId);
         if (!this.selectedItem) {
-            return <Loading />
+            return <NotFound />
         }
 
         return (
