@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import CalendarListItem from './CalendarListItem';
 import { MainProps } from '../states/MainProps';
 import { CalendarItemModel } from '../models/CalendarItemModel';
