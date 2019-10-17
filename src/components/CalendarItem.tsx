@@ -4,7 +4,6 @@ import { History } from 'history';
 import { MainProps } from '../states/MainProps';
 import { Form, Button } from 'react-bootstrap';
 import moment from 'moment';
-import { CalendarCode } from '../models/CalendarCode';
 import Loading from './Loading';
 import NotFound from './NotFound';
 

@@ -11,6 +11,11 @@ a:hover .new-day {
     background: #66ccff;
 }
 
+.unchanged a:hover{
+    background: #fff;
+    cursor: default;
+}
+
 .center-screen {
     position: fixed;
     top: 50%;

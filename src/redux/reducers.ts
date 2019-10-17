@@ -13,7 +13,7 @@ function calendarCodes(state: CalendarCode[] = CalendarItemCodeData, action: Any
 const defaultFilter = Number(moment().format("YYYYMM"));
 function filter(state: Filter = { yearMonthId: defaultFilter }, action: AnyAction) {
     if (action.type === ActionTypes.UPDATE_FILTER) {
-        state.yearMonthId = action.yearMonthId;
+        return { yearMonthId: action.yearMonthId };
     }
     return state;
 }

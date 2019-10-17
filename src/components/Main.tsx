@@ -5,7 +5,8 @@ import { Container } from 'react-bootstrap';
 import SiteNavbar from './SiteNavbar';
 import CalendarList from './CalendarList';
 import CalendarItem from './CalendarItem';
-import { MainState } from '../states/MainState'; 
+import { MainState } from '../states/MainState';
+import MonthPicker from './MonthPicker';
 
 class Main extends Component<MainProps> {
 
@@ -17,10 +18,17 @@ class Main extends Component<MainProps> {
             isLoading: false,
             items: []
         }
+
+        this.handleReloadData = this.handleReloadData.bind(this);
     }
 
     componentDidMount() {
-        this.props.doLoadCalendar(this.props.filter.yearMonthId)
+        this.handleReloadData(this.props.filter.yearMonthId);
+    }
+
+    handleReloadData(yearMonthId: number) {
+        this.state.isLoading = true;
+        this.props.doLoadCalendar(yearMonthId)
             .then(() => {
                 this.state.isLoading = false;
             });
@@ -34,6 +42,7 @@ class Main extends Component<MainProps> {
                 <Container>
                     <Route exact path="/" render={() => (
                         <div>
+                            <MonthPicker {...this.props} reloadData={this.handleReloadData} />
                             <CalendarList items={items} {...this.props} />
                         </div>
                     )} />
