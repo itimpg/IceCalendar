@@ -8,9 +8,7 @@ import CalendarItem from './CalendarItem';
 import { MainState } from '../states/MainState';
 import MonthPicker from './MonthPicker';
 
-class Main extends Component<MainProps> {
-
-    state: MainState;
+class Main extends Component<MainProps, MainState> {
 
     constructor(props: MainProps, context?: any) {
         super(props, context);
@@ -27,10 +25,14 @@ class Main extends Component<MainProps> {
     }
 
     handleReloadData(yearMonthId: number) {
-        this.state.isLoading = true;
+        this.setState({
+            isLoading: true
+        })
         this.props.doLoadCalendar(yearMonthId)
-            .then(() => {
-                this.state.isLoading = false;
+            .finally(() => {
+                this.setState({
+                    isLoading: false
+                })
             });
     }
 

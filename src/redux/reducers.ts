@@ -25,6 +25,9 @@ function calendarItems(
     switch (action.type) {
         case ActionTypes.LOAD_CALENDARITEMS:
             return fillMonth(action.yearMonthId, action.items);
+        case ActionTypes.SAVE_CALENDARITEM:
+            const index = [...state].findIndex((item) => item.id === action.item.id);
+            return [...state.slice(0, index), action.item, ...state.slice(index + 1)];
     }
     return state;
 }

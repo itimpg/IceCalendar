@@ -21,9 +21,12 @@ export function doLoadCalendar(yearMonthId: number) {
 }
 
 export function doSaveCalendar(calendarItem: CalendarItemModel, yearMonthId: number) {
-    return () => {
+    return (dispatch: Dispatch) => {
         return database.ref(`calendars/${yearMonthId}`)
             .update({ [calendarItem.id]: calendarItem })
+            .then(() => {
+                dispatch(saveCalendar(calendarItem));
+            })
             .catch((error: any) => {
                 console.log(error);
             });
@@ -35,6 +38,13 @@ function loadCalendar(items: any[], yearMonthId: number): AnyAction {
         type: ActionTypes.LOAD_CALENDARITEMS,
         yearMonthId,
         items
+    }
+}
+
+function saveCalendar(item: CalendarItemModel): AnyAction {
+    return {
+        type: ActionTypes.SAVE_CALENDARITEM,
+        item
     }
 }
 
